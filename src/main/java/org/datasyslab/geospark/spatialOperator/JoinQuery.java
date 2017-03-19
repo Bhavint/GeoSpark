@@ -651,22 +651,22 @@ public class JoinQuery implements Serializable{
             return resultCountByKey;
         }
     }
-		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(PointRDD objectRDD, RectangleRDD rectangleRDD)
+		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(JavaSparkContext sc,PointRDD objectRDD, RectangleRDD rectangleRDD)
 	{
 		
-		SparkConf conf = new SparkConf().setMaster("master").setAppName("JoinQuery");
-		final JavaSparkContext sc = new JavaSparkContext(conf);
-
-//		PointRDD objectRDD = new PointRDD(sc, pointRDD, 0, FileDataSplitter.CSV, false, 10, StorageLevel
-//				.MEMORY_ONLY_SER()); /*
-//										 * The O means spatial attribute starts at
-//										 * Column 0 and the 10 means 10 RDD
-//										 * partitions
-//										 */
-//		RectangleRDD rectangleRDD = new RectangleRDD(sc, RectangleRDD, 0, FileDataSplitter.CSV, false,
-//				StorageLevel
-//						.MEMORY_ONLY_SER()); 
-		// collect rectangles into a java list
+//		SparkConf conf = new SparkConf().setMaster("master").setAppName("JoinQuery");
+//		final JavaSparkContext sc = new JavaSparkContext(conf);
+//
+////		PointRDD objectRDD = new PointRDD(sc, pointRDD, 0, FileDataSplitter.CSV, false, 10, StorageLevel
+////				.MEMORY_ONLY_SER()); /*
+////										 * The O means spatial attribute starts at
+////										 * Column 0 and the 10 means 10 RDD
+////										 * partitions
+////										 */
+////		RectangleRDD rectangleRDD = new RectangleRDD(sc, RectangleRDD, 0, FileDataSplitter.CSV, false,
+////				StorageLevel
+////						.MEMORY_ONLY_SER()); 
+//		// collect rectangles into a java list
 		JavaRDD javaRDD = rectangleRDD.getRawSpatialRDD();
 		List<Envelope>rectangleRDDList=javaRDD.collect();
 		JavaRDD<Point> resultRDD = null;
