@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 public class RectangleRDD extends SpatialRDD {
 
-    
+	private static final long serialVersionUID = 4077835750129660195L;
     
 	/**
 	 * Instantiates a new rectangle RDD.

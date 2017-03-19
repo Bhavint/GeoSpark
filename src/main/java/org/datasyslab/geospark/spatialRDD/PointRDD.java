@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Point;
 
 public class PointRDD extends SpatialRDD {
     
+	private static final long serialVersionUID = -4492710796076067732L;
 	/**
 	 * Instantiates a new point RDD.
 	 *
