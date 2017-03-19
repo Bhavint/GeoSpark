@@ -7,16 +7,22 @@
 package org.datasyslab.geospark.spatialOperator;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.api.java.function.PairFunction;
+import org.apache.spark.storage.StorageLevel;
 import org.datasyslab.geospark.joinJudgement.GeometryByPolygonJudgement;
 import org.datasyslab.geospark.joinJudgement.GeometryByPolygonJudgementUsingIndex;
 import org.datasyslab.geospark.joinJudgement.GeometryByRectangleJudgement;
+import org.datasyslab.geospark.enums.FileDataSplitter;
 import org.datasyslab.geospark.joinJudgement.AllByRectangleJudgementUsingIndex;
 import org.datasyslab.geospark.joinJudgement.RectangleByRectangleJudgement;
 import org.datasyslab.geospark.spatialPartitioning.DuplicatesHandler;
@@ -645,21 +651,21 @@ public class JoinQuery implements Serializable{
             return resultCountByKey;
         }
     }
-		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(String pointRDD, String RectangleRDD)
+		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(PointRDD objectRDD, RectangleRDD rectangleRDD)
 	{
 		
 		SparkConf conf = new SparkConf().setMaster("master").setAppName("JoinQuery");
 		final JavaSparkContext sc = new JavaSparkContext(conf);
 
-		PointRDD objectRDD = new PointRDD(sc, pointRDD, 0, FileDataSplitter.CSV, false, 10, StorageLevel
-				.MEMORY_ONLY_SER()); /*
-										 * The O means spatial attribute starts at
-										 * Column 0 and the 10 means 10 RDD
-										 * partitions
-										 */
-		RectangleRDD rectangleRDD = new RectangleRDD(sc, RectangleRDD, 0, FileDataSplitter.CSV, false,
-				StorageLevel
-						.MEMORY_ONLY_SER()); 
+//		PointRDD objectRDD = new PointRDD(sc, pointRDD, 0, FileDataSplitter.CSV, false, 10, StorageLevel
+//				.MEMORY_ONLY_SER()); /*
+//										 * The O means spatial attribute starts at
+//										 * Column 0 and the 10 means 10 RDD
+//										 * partitions
+//										 */
+//		RectangleRDD rectangleRDD = new RectangleRDD(sc, RectangleRDD, 0, FileDataSplitter.CSV, false,
+//				StorageLevel
+//						.MEMORY_ONLY_SER()); 
 		// collect rectangles into a java list
 		JavaRDD javaRDD = rectangleRDD.getRawSpatialRDD();
 		List<Envelope>rectangleRDDList=javaRDD.collect();
