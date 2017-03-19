@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
@@ -651,11 +652,11 @@ public class JoinQuery implements Serializable{
             return resultCountByKey;
         }
     }
-		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(JavaSparkContext sc,PointRDD objectRDD, RectangleRDD rectangleRDD)
+		public static JavaPairRDD<Envelope, HashSet<Point>> getCustomSpatialJoinQuery(SparkContext sc,PointRDD objectRDD, RectangleRDD rectangleRDD)
 	{
 		
 //		SparkConf conf = new SparkConf().setMaster("master").setAppName("JoinQuery");
-//		final JavaSparkContext sc = new JavaSparkContext(conf);
+		final JavaSparkContext scontext = new JavaSparkContext(sc);
 //
 ////		PointRDD objectRDD = new PointRDD(sc, pointRDD, 0, FileDataSplitter.CSV, false, 10, StorageLevel
 ////				.MEMORY_ONLY_SER()); /*
@@ -686,7 +687,7 @@ public class JoinQuery implements Serializable{
 				e.printStackTrace();
 			}
 			
-			resultList=sc.parallelizePairs(pointRectanglePairList);
+			resultList=scontext.parallelizePairs(pointRectanglePairList);
 			return resultList;
 	}
 		return resultList;
